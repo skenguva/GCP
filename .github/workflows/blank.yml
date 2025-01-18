@@ -1,0 +1,67 @@
+name: Provision GCP VM with Terraform
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_id:
+        description: "GCP Project ID"
+        required: true
+        type: string
+      region:
+        description: "GCP Region"
+        required: true
+        type: string
+        default: "us-central1"
+      zone:
+        description: "GCP Zone"
+        required: true
+        type: string
+        default: "us-central1-a"
+      instance_name:
+        description: "VM Instance Name"
+        required: true
+        type: string
+      machine_type:
+        description: "VM Machine Type"
+        required: true
+        type: string
+        default: "e2-medium"
+      boot_disk_size:
+        description: "Boot Disk Size in GB"
+        required: true
+        type: string
+        default: "10"
+
+jobs:
+  provision:
+    name: Provision GCP VM
+    runs-on: self-hosted  # Use the self-hosted runner
+    labels:
+      - GCP_VM  # Specify the label for your self-hosted runner
+
+    steps:
+      # Step 1: Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      # Step 2: Update Terraform Variables
+      - name: Update Terraform Variables
+        run: |
+          cat > terraform.tfvars <<EOT
+          project_id     = "${{ github.event.inputs.project_id }}"
+          region         = "${{ github.event.inputs.region }}"
+          zone           = "${{ github.event.inputs.zone }}"
+          instance_name  = "${{ github.event.inputs.instance_name }}"
+          machine_type   = "${{ github.event.inputs.machine_type }}"
+          boot_disk_size = ${github.event.inputs.boot_disk_size}
+          EOT
+
+      # Step 3: Run Terraform Commands
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
