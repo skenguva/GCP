@@ -35,7 +35,7 @@ on:
 jobs:
   provision:
     name: Provision GCP VM
-    runs-on: self-hosted  # Use the self-hosted runner
+    runs-on: [self-hosted, GCP_VM]
     labels:
       - GCP_VM  # Specify the label for your self-hosted runner
 
