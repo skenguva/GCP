@@ -35,7 +35,7 @@ on:
 jobs:
   provision:
     name: Provision GCP VM
-    runs-on: [self-hosted, GCP_VM]
+    runs-on: self-hosted
     steps:
       # Step 1: Checkout the repository
       - name: Checkout Repository
