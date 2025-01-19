@@ -50,7 +50,7 @@ jobs:
           zone           = "${{ github.event.inputs.zone }}"
           instance_name  = "${{ github.event.inputs.instance_name }}"
           machine_type   = "${{ github.event.inputs.machine_type }}"
-          boot_disk_size = ${github.event.inputs.boot_disk_size}
+          boot_disk_size = "${{ github.event.inputs.boot_disk_size }}"
           EOT
 
       # Step 3: Run Terraform Commands
