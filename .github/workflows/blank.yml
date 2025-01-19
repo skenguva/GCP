@@ -52,13 +52,14 @@ jobs:
           machine_type   = "${{ github.event.inputs.machine_type }}"
           boot_disk_size = "${{ github.event.inputs.boot_disk_size }}"
           EOT
+      
 
       # Step 3: Run Terraform Commands
       - name: Terraform Init
-        run: terraform init
+        run: cd /home/skenguva2/create_vm && terraform init
 
       - name: Terraform Plan
-        run: terraform plan -out=tfplan
+        run: cd /home/skenguva2/create_vm && terraform plan -out=tfplan
 
       - name: Terraform Apply
-        run: terraform apply -auto-approve tfplan
+        run: cd /home/skenguva2/create_vm && terraform apply -auto-approve tfplan
